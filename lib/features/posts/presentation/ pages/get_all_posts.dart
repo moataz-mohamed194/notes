@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../core/util/snackbar_message.dart';
-import '../../../../injection_container.dart' as di;
-
 import '../../../../core/widgets/loading_widget.dart';
-import '../../../../core/widgets/message_display_widget.dart';
-import '../../../../injection_container.dart';
 import '../../../choose_database/settings_page.dart';
 import '../../../user/presentation/ pages/add_user.dart';
 import '../../../user/presentation/ pages/get_all_user.dart';
@@ -15,6 +10,7 @@ import '../widgets/post_list_widget.dart';
 import 'add_or_edit_post.dart';
 
 class GetAllPostsPage extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,9 +54,13 @@ class GetAllPostsPage extends StatelessWidget {
               if (state is LoadingPostsState) {
                 return LoadingWidget();
               } else if (state is LoadedPostsState) {
-                return Container(
-                  child: PostListWidget(post: state.posts),
-                );
+                return RefreshIndicator(
+                    onRefresh: () => _onRefresh(context),
+                    child:PostListWidget(post: state.posts, post2:state.posts),);
+
+                //   Container(
+                //   child:
+                // );
               } else if (state is MessageAddUpdateGetPostState) {
                 context.read<AddGetCubit>().fetchData();
               }
@@ -81,5 +81,12 @@ class GetAllPostsPage extends StatelessWidget {
       },
       child: Icon(Icons.add),
     );
+  }
+  _onRefresh(BuildContext context) async {
+    try {
+      context.read<AddGetCubit>()..fetchData();
+    }catch(e){
+      print(e);
+    }
   }
 }
