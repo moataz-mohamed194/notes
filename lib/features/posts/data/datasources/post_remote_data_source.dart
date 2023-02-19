@@ -20,16 +20,14 @@ class PostRemoteDataSourceImple extends PostRemoteDataSource {
 
   @override
   Future<Unit> addPost(PostsEntities post) async {
-    final body = {
-      'Text': post.text.toString(),
-      'PlaceDateTime': post.placeDateTime.toString(),
-      'UserId': post.userId.toString(),
-      'id': 0.toString()
-    };
+    String body =
+        '{"Text": "${post.text.toString()}","UserId": "","PlaceDateTime": "${post.placeDateTime.toString()}"}';
     try {
-      final response =
-          await client.post(Uri.parse(BASE_URL + '/notes/insert/'), body: body);
-
+      final response = await client.post(
+        Uri.parse(BASE_URL + '/notes/insert/'),
+        body: body,
+        headers: {'Content-Type': 'application/json'},
+      );
       if (response.statusCode == 200) {
         return Future.value(unit);
       } else {
@@ -62,14 +60,14 @@ class PostRemoteDataSourceImple extends PostRemoteDataSource {
 
   @override
   Future<Unit> updatePost(PostsEntities post) async {
-    final body = {
-      'Text': post.text.toString(),
-      'PlaceDateTime': post.placeDateTime.toString(),
-      'UserId': post.userId.toString(),
-      'id': post.id.toString()
-    };
-    final response =
-        await client.post(Uri.parse(BASE_URL + '/notes/update'), body: body);
+    String body =
+        '{"Text": "${post.text.toString()}","UserId": "${post.userId.toString()}","PlaceDateTime": "${post.placeDateTime.toString()}","id":"${post.id.toString()}"}';
+
+    final response = await client.post(
+      Uri.parse(BASE_URL + '/notes/update'),
+      body: body,
+      headers: {'Content-Type': 'application/json'},
+    );
     if (response.statusCode == 200) {
       return Future.value(unit);
     } else {

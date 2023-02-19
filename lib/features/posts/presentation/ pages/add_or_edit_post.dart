@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:notes/features/posts/%20domain/entities/posts_entities.dart';
 
 import '../bloc/add_get_cubit.dart';
+import '../widgets/add_widget.dart';
+import '../widgets/edit_widget.dart';
 
 class AddOrEditPostPage extends StatelessWidget {
   final PostsEntities? postOldData;
@@ -18,7 +21,7 @@ class AddOrEditPostPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color(0xff6200EE),
         title: Text(isItEdit == true ? 'Edit Note' : 'Add Note'),
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.save))],
+        actions: [IconButton(onPressed: ()=>validateFormThenUpdateOrAddPost(context), icon: const Icon(Icons.save))],
       ),
       body: appBody(context),
     );
@@ -35,26 +38,7 @@ class AddOrEditPostPage extends StatelessWidget {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: TextFormField(
-                  // controller: _titleController,
-                  initialValue: postOldData!.text.toString(),
-                  validator: (val) => val!.isEmpty ? 'must add the note' : null,
-                  decoration: const InputDecoration(
-                    labelText: 'Note',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      borderSide: BorderSide(color: Colors.black26, width: 0),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      borderSide: BorderSide(color: Colors.black26, width: 0),
-                    ),
-                  ),
-                  maxLines: 4,
-                  onChanged: (val) {
-                    postOldData!.text = val;
-                  },
-                ),
+                child: isItEdit==true?EditWidget(postOldData: postOldData,):AddWidget(titleController: _titleController,),
               ),
             ],
           ),
@@ -72,30 +56,28 @@ class AddOrEditPostPage extends StatelessWidget {
           final post = PostsEntities(
             id: 0.toString(),
             text: _titleController.text.toString(),
-            placeDateTime: ''.toString(),
+            placeDateTime: DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now()).toString(),
           );
           BlocProvider.of<AddGetCubit>(context).addNoteData(post);
-
-          // BlocProvider.of<AddGetCubit>(context)
-          //     .add(AddSickEvent(sick: sick));
+// print(post);
         } catch (e) {
           print(e);
         }
       }
-    } else {
+    }
+    else {
       try {
         final post = PostsEntities(
           id: postOldData!.id.toString(),
           text: postOldData!.text.toString(),
-          placeDateTime: postOldData!.placeDateTime.toString(),
+          placeDateTime: DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now()).toString(),
         );
         BlocProvider.of<AddGetCubit>(context).updateNoteData(post);
-
-        // BlocProvider.of<AddGetCubit>(context)
-        //     .add(AddSickEvent(sick: sick));
+// print(post);
       } catch (e) {
         print(e);
       }
     }
+    Navigator.of(context).pop();
   }
 }

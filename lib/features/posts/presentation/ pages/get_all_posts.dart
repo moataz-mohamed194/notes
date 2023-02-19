@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/util/snackbar_message.dart';
 import '../../../../injection_container.dart' as di;
 
 import '../../../../core/widgets/loading_widget.dart';
 import '../../../../core/widgets/message_display_widget.dart';
+import '../../../../injection_container.dart';
+import '../../../user/presentation/ pages/add_user.dart';
+import '../../../user/presentation/ pages/get_all_user.dart';
 import '../bloc/add_get_cubit.dart';
 import '../bloc/post_state.dart';
 import '../widgets/post_list_widget.dart';
@@ -17,9 +21,17 @@ class GetAllPostsPage extends StatelessWidget {
         backgroundColor: Color(0xff6200EE),
         title: Text('Notes'),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.add)),
+          IconButton(onPressed: () { Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => AddOrEditUserPage(
+                  )));}, icon: Icon(Icons.add)),
           IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.menu))
+          IconButton(onPressed: () { Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => GetAllUserPage(
+                  )));}, icon: Icon(Icons.menu))
         ],
       ),
       body: _buildBody(),
@@ -41,6 +53,8 @@ class GetAllPostsPage extends StatelessWidget {
                 return Container(
                   child: PostListWidget(post: state.posts),
                 );
+              } else if (state is MessageAddUpdateGetPostState) {
+                context.read<AddGetCubit>().fetchData();
               }
               return Container();
             })));

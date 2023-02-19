@@ -11,6 +11,13 @@ import 'features/posts/ domain/usecases/update_post.dart';
 import 'features/posts/data/datasources/post_remote_data_source.dart';
 import 'features/posts/data/repositories/post_repositories.dart';
 import 'features/posts/presentation/bloc/add_get_cubit.dart';
+import 'features/user/ domain/repositories/user_repositorie.dart';
+import 'features/user/ domain/usecases/add_user.dart';
+import 'features/user/ domain/usecases/delete_user.dart';
+import 'features/user/ domain/usecases/get_all_users.dart';
+import 'features/user/data/datasources/user_remote_data_source.dart';
+import 'features/user/data/repositories/user_repositories.dart';
+import 'features/user/presentation/bloc/add_get_user_cubit.dart';
 
 final sl = GetIt.instance;
 Future<void> init() async {
@@ -19,18 +26,28 @@ Future<void> init() async {
   sl.registerFactory(
       () => AddGetCubit(getPosts: sl(), addPost: sl(), updatePost: sl()));
 
+  sl.registerFactory(
+      () => AddGetUserCubit(addUser: sl(), deleteUser: sl(), getUser: sl()));
+
   //UseCase
   sl.registerLazySingleton(() => AddPost(sl()));
   sl.registerLazySingleton(() => GetAllPosts(sl()));
   sl.registerLazySingleton(() => UpdatePost(sl()));
+  sl.registerLazySingleton(() => AddUser(sl()));
+  sl.registerLazySingleton(() => DeleteUser(sl()));
+  sl.registerLazySingleton(() => GetAllUser(sl()));
 
   //Repository
   sl.registerLazySingleton<PostRepository>(
       () => PostRepositoriesImpl(remoteDataSource: sl(), networkInfo: sl()));
+  sl.registerLazySingleton<UserRepository>(
+      () => UserRepositoriesImpl(remoteDataSource: sl(), networkInfo: sl()));
 
   //Datasources
   sl.registerLazySingleton<PostRemoteDataSource>(
       () => PostRemoteDataSourceImple(client: sl()));
+  sl.registerLazySingleton<UserRemoteDataSource>(
+      () => UserRemoteDataSourceImple(client: sl()));
 
   //Core
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
