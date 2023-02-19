@@ -6,6 +6,7 @@ import '../../../user/presentation/ pages/add_user.dart';
 import '../../../user/presentation/ pages/get_all_user.dart';
 import '../bloc/add_get_cubit.dart';
 import '../bloc/post_state.dart';
+import '../widgets/SearchPage.dart';
 import '../widgets/post_list_widget.dart';
 import 'add_or_edit_post.dart';
 
@@ -56,11 +57,7 @@ class GetAllPostsPage extends StatelessWidget {
               } else if (state is LoadedPostsState) {
                 return RefreshIndicator(
                     onRefresh: () => _onRefresh(context),
-                    child:PostListWidget(post: state.posts, post2:state.posts),);
-
-                //   Container(
-                //   child:
-                // );
+                    child:SearchPage(post2: state.posts),);
               } else if (state is MessageAddUpdateGetPostState) {
                 context.read<AddGetCubit>().fetchData();
               }

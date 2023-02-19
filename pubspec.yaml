@@ -52,7 +52,7 @@ dependencies:
   path_provider:
   hive_generator: ^2.0.0
   search_page: ^2.3.0
-
+  searchable_listview: ^2.2.1
 
 dev_dependencies:
   flutter_test:
