@@ -20,6 +20,7 @@ class PostRemoteDataSourceImple extends PostRemoteDataSource {
 
   @override
   Future<Unit> addPost(PostsEntities post) async {
+    print('you added in the online');
     String body =
         '{"Text": "${post.text.toString()}","UserId": "","PlaceDateTime": "${post.placeDateTime.toString()}"}';
     try {

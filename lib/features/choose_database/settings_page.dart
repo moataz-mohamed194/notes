@@ -38,7 +38,7 @@ class SettingPage extends StatelessWidget {
             BlocBuilder<switchCubit, bool>(
               builder: (context, isChecked) {
                 return Switch(
-                  value: isChecked,
+                  value: context.read<switchCubit>().isSwitch,
                   onChanged: (value) {
                     BlocProvider.of<switchCubit>(context).changeSwitcher(value);
                   },

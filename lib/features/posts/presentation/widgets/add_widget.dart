@@ -9,7 +9,7 @@ class AddWidget extends StatelessWidget {
     // TODO: implement build
     return TextFormField(
       controller: titleController,
-      validator: (val) => val!.isEmpty ? 'must add the note' : null,
+      validator: (val) => val!.isEmpty == true ? 'must add the note' : null,
       decoration: const InputDecoration(
         labelText: 'Note',
         border: OutlineInputBorder(

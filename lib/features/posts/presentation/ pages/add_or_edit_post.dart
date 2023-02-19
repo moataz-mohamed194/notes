@@ -70,8 +70,9 @@ class AddOrEditPostPage extends StatelessWidget {
                 .format(DateTime.now())
                 .toString(),
           );
-          BlocProvider.of<AddGetCubit>(context).addNoteData(post);
-// print(post);
+          print(post);
+          context.read<AddGetCubit>()..addNoteData(post);
+          Navigator.of(context).pop();
         } catch (e) {
           print(e);
         }
@@ -85,12 +86,11 @@ class AddOrEditPostPage extends StatelessWidget {
               .format(DateTime.now())
               .toString(),
         );
-        BlocProvider.of<AddGetCubit>(context).updateNoteData(post);
-// print(post);
+        context.read<AddGetCubit>()..updateNoteData(post);
+        Navigator.of(context).pop();
       } catch (e) {
         print(e);
       }
     }
-    Navigator.of(context).pop();
   }
 }

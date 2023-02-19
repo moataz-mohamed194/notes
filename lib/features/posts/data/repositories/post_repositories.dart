@@ -6,15 +6,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../ domain/repositories/post_repositorie.dart';
 import '../../../../core/error/Exception.dart';
 import '../../../../core/network/network_info.dart';
+import '../datasources/local_post_remote_data_source.dart';
 import '../datasources/post_remote_data_source.dart';
 import '../models/post_model.dart';
 
 class PostRepositoriesImpl implements PostRepository {
   final PostRemoteDataSource remoteDataSource;
+  final LocalPostRemoteDataSource localRemoteDataSource;
   final NetworkInfo networkInfo;
 
   PostRepositoriesImpl(
-      {required this.remoteDataSource, required this.networkInfo});
+      {required this.remoteDataSource,
+      required this.networkInfo,
+      required this.localRemoteDataSource});
 
   @override
   Future<Either<Failures, Unit>> addPost(PostsEntities post) async {
@@ -23,7 +27,12 @@ class PostRepositoriesImpl implements PostRepository {
         userId: post.userId,
         placeDateTime: post.placeDateTime,
         text: post.text);
-    if (await networkInfo.isConnected) {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? useLocal = prefs.getBool('useLocal');
+    if (useLocal == true) {
+      await localRemoteDataSource.addPost(postModel);
+      return Right(unit);
+    } else if (await networkInfo.isConnected) {
       try {
         await remoteDataSource.addPost(postModel);
         return Right(unit);
@@ -39,8 +48,11 @@ class PostRepositoriesImpl implements PostRepository {
   Future<Either<Failures, List<PostsEntities>>> getAllPosts() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool? useLocal = prefs.getBool('useLocal');
-
-    if (await networkInfo.isConnected) {
+    if (useLocal == true) {
+      final currentPost = await localRemoteDataSource.getPost();
+      print(currentPost);
+      return Right(currentPost);
+    } else if (await networkInfo.isConnected) {
       try {
         final currentPost = await remoteDataSource.getPost();
         return Right(currentPost);
@@ -59,7 +71,12 @@ class PostRepositoriesImpl implements PostRepository {
         userId: post.userId,
         placeDateTime: post.placeDateTime,
         text: post.text);
-    if (await networkInfo.isConnected) {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? useLocal = prefs.getBool('useLocal');
+    if (useLocal == true) {
+      await localRemoteDataSource.updatePost(postModel);
+      return Right(unit);
+    } else if (await networkInfo.isConnected) {
       try {
         await remoteDataSource.updatePost(postModel);
         return Right(unit);

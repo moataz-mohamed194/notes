@@ -1,20 +1,24 @@
 import 'package:dartz/dartz.dart';
 import 'package:notes/core/error/failures.dart';
-import 'package:notes/features/posts/%20domain/entities/posts_entities.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../ domain/entities/users_entities.dart';
 import '../../ domain/repositories/user_repositorie.dart';
 import '../../../../core/error/Exception.dart';
 import '../../../../core/network/network_info.dart';
+import '../datasources/local_user_remote_data_source.dart';
 import '../datasources/user_remote_data_source.dart';
 import '../models/user_model.dart';
 
 class UserRepositoriesImpl implements UserRepository {
   final UserRemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
+  final LocalUserRemoteDataSource localRemoteDataSource;
 
   UserRepositoriesImpl(
-      {required this.remoteDataSource, required this.networkInfo});
+      {required this.localRemoteDataSource,
+      required this.remoteDataSource,
+      required this.networkInfo});
 
   @override
   Future<Either<Failures, Unit>> addUser(UserEntities user) async {
@@ -25,7 +29,12 @@ class UserRepositoriesImpl implements UserRepository {
         imageAsBase64: user.imageAsBase64,
         intrestId: user.intrestId,
         username: user.username);
-    if (await networkInfo.isConnected) {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? useLocal = prefs.getBool('useLocal');
+    if (useLocal == true) {
+      await localRemoteDataSource.addUser(userModel);
+      return Right(unit);
+    } else if (await networkInfo.isConnected) {
       try {
         await remoteDataSource.addUser(userModel);
         return Right(unit);
@@ -46,7 +55,12 @@ class UserRepositoriesImpl implements UserRepository {
         imageAsBase64: user.imageAsBase64,
         intrestId: user.intrestId,
         username: user.username);
-    if (await networkInfo.isConnected) {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? useLocal = prefs.getBool('useLocal');
+    if (useLocal == true) {
+      await localRemoteDataSource.deleteUser(userModel);
+      return Right(unit);
+    } else if (await networkInfo.isConnected) {
       try {
         await remoteDataSource.deleteUser(userModel);
         return Right(unit);
@@ -60,7 +74,12 @@ class UserRepositoriesImpl implements UserRepository {
 
   @override
   Future<Either<Failures, List<UserEntities>>> getAllUsers() async {
-    if (await networkInfo.isConnected) {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? useLocal = prefs.getBool('useLocal');
+    if (useLocal == true) {
+      final currentUser = await localRemoteDataSource.getUsers();
+      return Right(currentUser);
+    } else if (await networkInfo.isConnected) {
       try {
         final currentUser = await remoteDataSource.getUser();
         return Right(currentUser);
