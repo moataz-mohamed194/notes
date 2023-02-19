@@ -17,7 +17,7 @@ class PostListWidget extends StatelessWidget {
           controller: searchController,
           validator: (val) => val!.isEmpty == true ? 'must add the note' : null,
           decoration: const InputDecoration(
-            labelText: 'Note',
+            labelText: 'Search',
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(10)),
               borderSide: BorderSide(color: Colors.black26, width: 0),
