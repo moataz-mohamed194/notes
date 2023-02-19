@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AddWidget extends StatelessWidget{
+class AddWidget extends StatelessWidget {
   final TextEditingController titleController;
 
   const AddWidget({super.key, required this.titleController});
@@ -22,9 +22,7 @@ class AddWidget extends StatelessWidget{
         ),
       ),
       maxLines: 4,
-      onChanged: (val) {
-      },
+      onChanged: (val) {},
     );
   }
-
 }

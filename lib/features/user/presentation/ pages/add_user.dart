@@ -8,7 +8,6 @@ import '../bloc/add_get_user_cubit.dart';
 import '../widgets/add_user_widget.dart';
 
 class AddOrEditUserPage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,18 +25,12 @@ class AddOrEditUserPage extends StatelessWidget {
   }
 
   Widget appBody(BuildContext context) {
-    return  Padding(
-        padding: const EdgeInsets.all(10),
-        child:
-              Container(
-                height: MediaQuery.of(context).size.height/2,
-                child: AddWidget(
-                  ),
-
-
-        ),
-
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Container(
+        height: MediaQuery.of(context).size.height / 2,
+        child: AddWidget(),
+      ),
     );
   }
-
 }

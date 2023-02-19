@@ -21,7 +21,11 @@ class AddOrEditPostPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color(0xff6200EE),
         title: Text(isItEdit == true ? 'Edit Note' : 'Add Note'),
-        actions: [IconButton(onPressed: ()=>validateFormThenUpdateOrAddPost(context), icon: const Icon(Icons.save))],
+        actions: [
+          IconButton(
+              onPressed: () => validateFormThenUpdateOrAddPost(context),
+              icon: const Icon(Icons.save))
+        ],
       ),
       body: appBody(context),
     );
@@ -38,7 +42,13 @@ class AddOrEditPostPage extends StatelessWidget {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: isItEdit==true?EditWidget(postOldData: postOldData,):AddWidget(titleController: _titleController,),
+                child: isItEdit == true
+                    ? EditWidget(
+                        postOldData: postOldData,
+                      )
+                    : AddWidget(
+                        titleController: _titleController,
+                      ),
               ),
             ],
           ),
@@ -56,7 +66,9 @@ class AddOrEditPostPage extends StatelessWidget {
           final post = PostsEntities(
             id: 0.toString(),
             text: _titleController.text.toString(),
-            placeDateTime: DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now()).toString(),
+            placeDateTime: DateFormat('yyyy-MM-ddTHH:mm:ss')
+                .format(DateTime.now())
+                .toString(),
           );
           BlocProvider.of<AddGetCubit>(context).addNoteData(post);
 // print(post);
@@ -64,13 +76,14 @@ class AddOrEditPostPage extends StatelessWidget {
           print(e);
         }
       }
-    }
-    else {
+    } else {
       try {
         final post = PostsEntities(
           id: postOldData!.id.toString(),
           text: postOldData!.text.toString(),
-          placeDateTime: DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now()).toString(),
+          placeDateTime: DateFormat('yyyy-MM-ddTHH:mm:ss')
+              .format(DateTime.now())
+              .toString(),
         );
         BlocProvider.of<AddGetCubit>(context).updateNoteData(post);
 // print(post);

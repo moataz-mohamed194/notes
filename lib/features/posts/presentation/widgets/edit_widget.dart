@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../ domain/entities/posts_entities.dart';
 
-class EditWidget extends StatelessWidget{
+class EditWidget extends StatelessWidget {
   final PostsEntities? postOldData;
 
   const EditWidget({super.key, required this.postOldData});
@@ -11,7 +11,7 @@ class EditWidget extends StatelessWidget{
   Widget build(BuildContext context) {
     // TODO: implement build
     return TextFormField(
-      initialValue: postOldData!=null?postOldData!.text.toString():null,
+      initialValue: postOldData != null ? postOldData!.text.toString() : null,
       validator: (val) => val!.isEmpty ? 'must add the note' : null,
       decoration: const InputDecoration(
         labelText: 'Note',
@@ -30,5 +30,4 @@ class EditWidget extends StatelessWidget{
       },
     );
   }
-
 }

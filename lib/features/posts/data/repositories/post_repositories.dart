@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:notes/core/error/failures.dart';
 import 'package:notes/features/posts/%20domain/entities/posts_entities.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../ domain/repositories/post_repositorie.dart';
 import '../../../../core/error/Exception.dart';
@@ -36,6 +37,9 @@ class PostRepositoriesImpl implements PostRepository {
 
   @override
   Future<Either<Failures, List<PostsEntities>>> getAllPosts() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? useLocal = prefs.getBool('useLocal');
+
     if (await networkInfo.isConnected) {
       try {
         final currentPost = await remoteDataSource.getPost();

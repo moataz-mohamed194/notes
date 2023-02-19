@@ -1,11 +1,28 @@
-import 'package:equatable/equatable.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:hive/hive.dart';
+// part 'UserEntities.g.dart';
+part 'users_entities.g.dart';
 
-class UserEntities extends Equatable {
+@HiveType(typeId: 1)
+class UserEntities extends HiveObject {
+  @HiveField(0)
   String? username;
+
+  @HiveField(1)
   String? password;
+
+  @HiveField(2)
   String? email;
+
+  @HiveField(3)
   String? imageAsBase64;
+
+  @HiveField(4)
   String? intrestId;
+
+  @HiveField(5)
   String? id;
 
   UserEntities(

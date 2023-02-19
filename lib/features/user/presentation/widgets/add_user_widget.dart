@@ -10,13 +10,11 @@ class AddWidget extends StatelessWidget {
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Form(
       key: _formKey,
-
       child: Column(
         // mainAxisAlignment: MainAxisAlignment.center,
         // crossAxisAlignment: CrossAxisAlignment.center,
@@ -31,7 +29,9 @@ class AddWidget extends StatelessWidget {
             height: 100,
             width: 100,
           ),
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           TextFormField(
             controller: nameController,
             validator: (val) => val!.isEmpty ? 'must add the Username' : null,
@@ -47,7 +47,9 @@ class AddWidget extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           TextFormField(
             controller: emailController,
             validator: (val) =>
@@ -66,8 +68,11 @@ class AddWidget extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           TextFormField(
+            obscureText: true,
             controller: passwordController,
             validator: (val) => val!.isEmpty || val.length < 8
                 ? "must add valid password and be longer than 7 chars"
@@ -84,7 +89,9 @@ class AddWidget extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           Container(
             margin: EdgeInsets.only(top: 10, bottom: 10),
             decoration: BoxDecoration(
@@ -94,7 +101,7 @@ class AddWidget extends StatelessWidget {
               ),
             ),
             child: TextButton(
-                onPressed: () =>validateFormThenUpdateOrAddUser(context),
+                onPressed: () => validateFormThenUpdateOrAddUser(context),
                 child: Container(
                   width: MediaQuery.of(context).size.width - 40,
                   height: 30,
@@ -130,5 +137,4 @@ class AddWidget extends StatelessWidget {
 
     Navigator.of(context).pop();
   }
-
 }

@@ -1,9 +1,22 @@
-import 'package:equatable/equatable.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:hive/hive.dart';
+// part 'PostsEntities.g.dart';
+part 'posts_entities.g.dart';
 
-class PostsEntities extends Equatable {
+@HiveType(typeId: 0)
+class PostsEntities extends HiveObject {
+  @HiveField(0)
   String? text;
+
+  @HiveField(1)
   String? placeDateTime;
+
+  @HiveField(2)
   String? userId;
+
+  @HiveField(3)
   String? id;
 
   PostsEntities({this.text, this.placeDateTime, this.userId, this.id});
